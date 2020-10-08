@@ -1,14 +1,20 @@
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic.base import View
+from django.views.generic import ListView, DetailView
 from .models import Movie
 
 
-class MoviesView(View):
+class MoviesView(ListView):
     """Список фильмок"""
 
-    def get(self, request): # request - вся инфа присланная от клиента (браузера)
-        movies = Movie.objects.all()
-        context = {
-            'movies_list': movies
-        }
-        return render(request, 'movies/movies_list.html', context)
+    model = Movie  # Модель с которой будем работать
+    queryset = Movie.objects.filter(draft=False)
+    # ORM запрос к БД, фильтровать по полю draft, значение False, т.е где фильмы не черновик
+    template_name = 'movies/movie_list.html'  # Шаблон
+
+
+class MovieDetailView(DetailView):
+    """Полное описание фильма"""
+
+    model = Movie
+    slug_field = 'url'

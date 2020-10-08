@@ -5,11 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>All movies</title>
+    <title>Все фильмы</title>
 </head>
 <body>
-    {% for movie in movies_list %}
-    {{ movie.title }}
+    {% for movie in movie_list %}
+        <a href="{{ movie.get_absolute_url }}">
+            {{movie.title}}
+        </a>
     {% endfor %}
 </body>
 </html>
