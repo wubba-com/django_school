@@ -1,31 +1,27 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Описание фильма</title>
-</head>
-<body>
-<p>{{movie.poster}}</p>
-<p>{{ movie.title }}</p>
-<p>{{ movie.year }}</p>
-<p>{{ movie.country }}</p>
-<p>{{ movie.tagline }}</p>
-{% for directory in movie.directory.all %}
-    <p>{{ directory.name }}</p>
-{% endfor %}
-{% for actor in movie.actor.all %}
-    <p>{{ actor.name }}</p>
-{% endfor %}
-{% for genre in movie.genre.all %}
-    <p>{{ genre.name }}</p>
-{% endfor %}
-<p>{{movie.world_premiere}}</p>
-<p>{{movie.fees_in_usa}}</p>
-<p>{{movie.fees_in_world}}</p>
-<p>{{movie.title}}</p>
-<p>{{movie.description}}</p>
-</body>
-</html>
+{% extends 'movies/base.html' %}
+{% block title %}
+    Описание {{ movie.title }}
+{% endblock title %}
+{% block content %}
+    <p>
+        <img src="{{movie.poster.url}}">
+    </p>
+    <p>{{ movie.title }}</p>
+    <p>{{ movie.year }}</p>
+    <p>{{ movie.country }}</p>
+    <p>{{ movie.tagline }}</p>
+    {% for directory in movie.directory.all %}
+        <p>{{ directory.name }}</p>
+    {% endfor %}
+    {% for actor in movie.actor.all %}
+        <p>{{ actor.name }}</p>
+    {% endfor %}
+    {% for genre in movie.genre.all %}
+        <p>{{ genre.name }}</p>
+    {% endfor %}
+    <p>{{movie.world_premiere}}</p>
+    <p>{{movie.fees_in_usa}}</p>
+    <p>{{movie.fees_in_world}}</p>
+    <p>{{movie.title}}</p>
+    <p>{{movie.description}}</p>
+{% endblock content %}
