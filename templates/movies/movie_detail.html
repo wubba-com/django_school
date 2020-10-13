@@ -30,8 +30,9 @@
         {% endfor %}
     </p>
 <div>
-    <form action="{% url 'add_review' movie.id %}" method="post">
+    <form action="{% url 'add_review' movie.id %}" method="post" id="formReview">
         {% csrf_token %}
+        <input type="hidden" name="parent" id="contactparent" value="">
         <div>
             <label for="contactcomment" class="editContent">
                 Ваш комментарий *
@@ -59,6 +60,13 @@
     {% for review in movie.reviews_set.all %}
         <h5>{{ review.name }}</h5>
         <p>{{ review.text }}</p>
+        <a href="#formReview" onclick="addReview('{{ review.name }}, {{review.id}}')">Ответить</a>
     {% endfor %}
 </div>
+    <script>
+        function addReview(){
+            document.getElementById('contactparent').value = id;
+            document.getElementById('contactconnect').InnerText = ${name},
+        }
+    </script>
 {% endblock content %}
