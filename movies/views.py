@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.views.generic import ListView, DetailView
-from .models import Movie, Category
+from .models import Movie, Category, Actor
 from .forms import ReviewForm
 
 
@@ -47,3 +47,9 @@ class AddReview(View):
             form.movie = movie
             form.save()
         return redirect(movie.get_absolute_url())
+
+
+class ActorView(DetailView):
+    model = Actor
+    template_name = 'movies/actor.html'
+    slug_field = 'name'  # Поле по которому мы будем искать наших актеров

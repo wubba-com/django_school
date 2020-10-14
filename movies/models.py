@@ -36,6 +36,9 @@ class Actor(models.Model):
     # ImageField проверяет допускается загруженный объект допустимый к изображениям,
     # в upload_to указывается директория куда будем загружать изображения
 
+    def get_absolute_url(self):
+        return reverse('actor_detail', kwargs={'slug':self.name})
+
     def __str__(self):
         return self.name
 

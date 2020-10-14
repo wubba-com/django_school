@@ -10,13 +10,13 @@
     <p>{{ movie.year }}</p>
     <p>{{ movie.country }}</p>
     <p>{{ movie.tagline }}</p>
-    {% for directory in movie.directory.all %}
-        <p>{{ directory.name }}</p>
+    {% for directory in movie.directors.all %}
+        <p><a href="{{ directory.get_absolute_url }}">{{ directory.name }}</a></p>
     {% endfor %}
-    {% for actor in movie.actor.all %}
-        <p>{{ actor.name }}</p>
+    {% for actor in movie.actors.all %}
+        <p><a href="{{ actor.get_absolute_url }}">{{ actor.name }}</a></p>
     {% endfor %}
-    {% for genre in movie.genre.all %}
+    {% for genre in movie.genres.all %}
         <p>{{ genre.name }}</p>
     {% endfor %}
     <p>{{movie.world_premiere}}</p>
