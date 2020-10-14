@@ -23,7 +23,7 @@
     <p>{{movie.fees_in_usa}}</p>
     <p>{{movie.fees_in_world}}</p>
     <p>{{movie.title}}</p>
-    <p>{{movie.description}}</p>
+    <p>{{movie.description | safe}}</p>
     <p>
         {% for image in movie.movieshots_set.all %}
             <img src="{{ image.image.url }}" alt="{{ image.description }}" width="200px" height="200px">

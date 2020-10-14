@@ -48,6 +48,7 @@ class MovieAdmin(admin.ModelAdmin):
     search_fields = ('title', 'category__name')  # Поиск
     inlines = [MovieShotsInline, ReviewInline]
     form = MovieAdminForm
+    actions = ['publish', 'unpublish'] # Регистрация экшенов
     save_on_top = True  # Кнопку сохранить перенети наверх
     save_as = True  # Появляется кнопка "сохранить как новый объект"
     list_editable = ('draft',)  # Как чекбокс в html, позволяет ставить галки в дисплее
@@ -80,6 +81,29 @@ class MovieAdmin(admin.ModelAdmin):
 
     get_image.short_description = "Постер"
 
+    def unpublish(self, request, queryset):
+        """Снять с публикации"""
+        row_update = queryset.update(draft=True)
+        if row_update == 1:
+            message_bit = '1 запись  была обновлена'
+        else:
+            message_bit = f'{row_update} записей было обновленно'
+        self.message_user(request, f'{message_bit}')
+
+    def publish(self, request, queryset):
+        """Опубликовать"""
+        row_update = queryset.update(draft=False)
+        if row_update == 1:
+            message_bit = '1 запись  была обновлена'
+        else:
+            message_bit = f'{row_update} записей было обновленно'
+        self.message_user(request, f'{message_bit}')
+
+    publish.short_description = 'Опубликовать'
+    publish.allowed_pernissions = ('change',)
+
+    unpublish.short_description = 'Снять с публикации'
+    unpublish.allowed_pernissions = ('change',)
 
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
