@@ -12,6 +12,16 @@
     </title>
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="{% url 'home'%}">Главная</a>
+            <ul>
+                {% for category in categories %}
+                    <li><a href="/">{{category.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
     {% block content %}
 
     {% endblock content %}

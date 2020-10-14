@@ -6,6 +6,6 @@
     {% for movie in movie_list %}
         <a href="{{ movie.get_absolute_url }}">
             {{movie.title}}
-        </a>
+        </a><br>
     {% endfor %}
 {% endblock content %}

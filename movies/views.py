@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.views.generic import ListView, DetailView
-from .models import Movie
+from .models import Movie, Category
 from .forms import ReviewForm
 
 
@@ -13,12 +13,24 @@ class MoviesView(ListView):
     # ORM запрос к БД, фильтровать по полю draft, значение False, т.е где фильмы не черновик
     template_name = 'movies/movie_list.html'  # Шаблон
 
+    def get_context_data(self, *args, **kwargs):
+        """Вывод всех категории (напрмиер, в навигации)"""
+        context = super().get_context_data(*args, **kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 class MovieDetailView(DetailView):
     """Полное описание фильма"""
 
     model = Movie
     slug_field = 'url'
+
+    def get_context_data(self, *args, **kwargs):
+        """Вывод всех категории (напрмиер, в навигации)"""
+        context = super().get_context_data(*args, **kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class AddReview(View):
