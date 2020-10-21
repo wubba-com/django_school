@@ -30,6 +30,20 @@
         {% endfor %}
     </p>
 <div>
+    <form action="{% url 'add_rating' %}" method="post" name="rating">
+        <strong>Рейтинг: </strong>
+        {% csrf_token %}
+        <input type="hidden" value="{{ movie.id }}" name="movie">
+        <span class="rating">
+            {% for key, value in star_form.fields.star.choices %}
+                <input id="rating{{ value }}" type="radio" name="star" value="{{ key }}">
+                <label for="rating{{ value }}">{{ key }}</label>
+            {% endfor %}
+                <input type="submit" value="проголосовать">
+        </span>
+    </form>
+</div>
+<div>
     <form action="{% url 'add_review' movie.id %}" method="post" id="formReview">
         {% csrf_token %}
         <input type="hidden" name="parent" id="contactparent" value="">
