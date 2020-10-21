@@ -3,6 +3,22 @@
 Все фильмы
 {% endblock title %}
 {% block content %}
+<form action="{% url 'filter' %}" method="get">
+    <h4>Жанры</h4>
+    <ul>
+        {% for genre in view.get_genres %}
+            <li><input type="checkbox" name="genre" value="{{ genre.id }}">{{ genre.name }}</li>
+        {% endfor %}
+    </ul>
+    <h4>Года</h4>
+    <ul>
+        {% for movie in view.get_years %}
+            <li><input type="checkbox" name="year" value="{{ movie.year }}"><span>{{ movie.year }}</span></li>
+        {% endfor %}
+    </ul>
+    <br>
+    <input type="submit" value="Найти">
+</form>
     {% for movie in movie_list %}
         <a href="{{ movie.get_absolute_url }}">
             {{movie.title}}

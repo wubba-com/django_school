@@ -1,11 +1,23 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.views.generic.base import View
 from django.views.generic import ListView, DetailView
-from .models import Movie, Category, Actor
+from .models import Movie, Category, Actor, Genre
 from .forms import ReviewForm
+from django.db.models import Q
 
 
-class MoviesView(ListView):
+class GenreYear:
+    """Реализация фильтров жанров и годов нашего фильтра"""
+
+    def get_genres(self):
+        return Genre.objects.all()
+
+    def get_years(self):
+        return Movie.objects.filter(draft=False).values('year')
+
+
+class MoviesView(GenreYear, ListView):
     """Список фильмок"""
 
     model = Movie  # Модель с которой будем работать
@@ -20,11 +32,11 @@ class MoviesView(ListView):
         return context
 
 
-class MovieDetailView(DetailView):
+class MovieDetailView(GenreYear, DetailView):
     """Полное описание фильма"""
 
     model = Movie
-    slug_field = 'url'
+    slug_field = 'url'  # атрибут отвечает за то, по какому полю нужно будет искать нашу запись
 
     def get_context_data(self, *args, **kwargs):
         """Вывод всех категории (напрмиер, в навигации)"""
@@ -53,3 +65,18 @@ class ActorView(DetailView):
     model = Actor
     template_name = 'movies/actor.html'
     slug_field = 'name'  # Поле по которому мы будем искать наших актеров
+
+
+class FilterMovieView(ListView):
+    """Создание фильтра фильма"""
+
+    def get_queryset(self):
+        """Будем фильтровать наши фильмы, там где года будут
+        входить в список, который будет нам возвращаться с
+        front-end, это список наших годов"""
+        queryset = Movie.objects.filter(
+            Q(year__in=self.request.GET.getlist('year')) | Q(genres__in=self.request.GET.getlist('genre'))
+            # getlist('genre') - 'genre' name из формы
+        )
+        # | - логичкская ИЛИ
+        return queryset
