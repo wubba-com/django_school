@@ -24,6 +24,7 @@ class MoviesView(GenreYear, ListView):
     queryset = Movie.objects.filter(draft=False)
     # ORM запрос к БД, фильтровать по полю draft, значение False, т.е где фильмы не черновик
     template_name = 'movies/movie_list.html'  # Шаблон
+    paginate_by = 2
 
     def get_context_data(self, *args, **kwargs):
         """Вывод всех категории (напрмиер, в навигации)"""
@@ -69,6 +70,8 @@ class ActorView(DetailView):
 class FilterMovieView(ListView):
     """Создание фильтра фильма"""
 
+    paginate_by = 2
+
     def get_queryset(self):
         """Будем фильтровать наши фильмы, там где года будут
         входить в список, который будет нам возвращаться с
@@ -76,9 +79,15 @@ class FilterMovieView(ListView):
         queryset = Movie.objects.filter(
             Q(year__in=self.request.GET.getlist('year')) | Q(genres__in=self.request.GET.getlist('genre'))
             # getlist('genre') - 'genre' name из формы
-        )
+        ).distinct()
         # | - логичкская ИЛИ
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['year'] = ''.join([f'year={x}&' for x in self.request.GET.getlist('year')])
+        context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist('genre')])
+        return context
 
 
 class AddStarRating(View):
@@ -103,3 +112,16 @@ class AddStarRating(View):
             return redirect('/')
         else:
             return HttpResponse(status=400)
+
+
+class Search(ListView):
+    """Поиск фильмов"""
+    paginate_by = 2
+
+    def get_queryset(self):
+        return Movie.objects.filter(title__icontains=self.request.GET.get('q'))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['q'] = self.request.GET.getlist('q')
+        return context
