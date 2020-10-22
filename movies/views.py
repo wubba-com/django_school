@@ -41,7 +41,8 @@ class MovieDetailView(GenreYear, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['star_form'] = RatingForm
+        context['star_form'] = RatingForm()
+        context['form'] = ReviewForm() # Добавляем каптчу
         return context
 
 
@@ -123,5 +124,5 @@ class Search(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['q'] = self.request.GET.getlist('q')
+        context['q'] = f"q={self.request.GET.get('q')}&"
         return context

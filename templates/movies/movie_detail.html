@@ -43,34 +43,26 @@
         </span>
     </form>
 </div>
-<div>
-    <form action="{% url 'add_review' movie.id %}" method="post" id="formReview">
-        {% csrf_token %}
-        <input type="hidden" name="parent" id="contactparent" value="">
-        <div>
-            <label for="contactcomment" class="editContent">
-                Ваш комментарий *
-            </label>
-            <textarea rows="5" name="text" required="" id="contactcomment"></textarea>
-        </div>
-        <div>
-            <div>
-                <label for="contactusername" class="editContent">
-                    Имя *
-                </label>
-                <input type="text" name="name" id="contactusername" required="">
-            </div>
-            <div>
-                <label for="contactemail">
-                    Email *
-                </label>
-                <input type="email" name="email" id="contactemail" required="">
-            </div>
-        </div>
-        <button type="submit">
-            Отправить
-        </button>
-    </form>
+<form action="{% url 'add_review' movie.id %}" method="post">
+    {% csrf_token %}
+    <label>
+        Имя
+    </label>
+    {{ form.name }}
+    <br>
+    <label>
+        Email
+    </label>
+    {{ form.email }}
+    <br>
+    {{ form.captcha }}
+    <label>
+        Ваш комментарий
+    </label>
+    {{ form.text }}
+    <br>
+    <input type="submit" value="Отправить">
+</form>
     {% for review in movie.reviews_set.all %}
         <h5>{{ review.name }}</h5>
         <p>{{ review.text }}</p>
