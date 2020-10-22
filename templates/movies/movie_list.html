@@ -1,51 +1,52 @@
 {% extends 'movies/base.html' %}
-{% block title %}
-Все фильмы
-{% endblock title %}
-{% block content %}
-<main role="main" >
-    <div class="album py-5 bg-light">
-        {% for movie in movie_list %}
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="{{ movie.poster.url }}" class="bd-placeholder-img card-img-top" width="200px" height="200px" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
-                        <div class="card-body">
-                            <a href="{{ movie.get_absolute_url }}" class="card-text">{{ movie.title }}</a>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+{% block title %} {% endblock title %}
+{% block header %} bg1 {% endblock header %}
+{% block movie %}
+    <div class="left-ads-display col-lg-9">
+        <div class="row">
+            {% for movie in movie_list %}
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4">
+                        <div class="men-thumb-item">
+                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{{ movie.get_absolute_url }}"
+                                   class="editContent">
+                                    {{ movie.title }}
+                                </a>
+                            </h4>
+
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <span class="money editContent">{{ movie.tagline }}</span>
                                 </div>
-                                <small class="text-muted">9 mins</small>
                             </div>
+                            <ul class="stars">
+                                <li><a href="#"><span class="fa fa-star"
+                                                      aria-hidden="true"></span></a>
+                                </li>
+                                <li><a href="#"><span class="fa fa-star"
+                                                      aria-hidden="true"></span></a>
+                                </li>
+                                <li><a href="#"><span class="fa fa-star-half-o"
+                                                      aria-hidden="true"></span></a>
+                                </li>
+                                <li><a href="#"><span class="fa fa-star-half-o"
+                                                      aria-hidden="true"></span></a>
+                                </li>
+                                <li><a href="#"><span class="fa fa-star-o"
+                                                      aria-hidden="true"></span></a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="grid-img-right mt-4 text-right bg bg1" >
+            {% include 'include/pagination.html' %}
+        </div>
     </div>
-</main>
-<form action="{% url 'filter' %}" method="get">
-    <h4>Жанры</h4>
-    <ul>
-        {% for genre in view.get_genres %}
-            <li><input type="checkbox" name="genre" value="{{ genre.id }}">{{ genre.name }}</li>
-        {% endfor %}
-    </ul>
-    <h4>Года</h4>
-    <ul>
-        {% for movie in view.get_years %}
-            <li><input type="checkbox" name="year" value="{{ movie.year }}"><span>{{ movie.year }}</span></li>
-        {% endfor %}
-    </ul>
-    <br>
-    <input type="submit" value="Найти">
-</form>
-<hr>
-<div>
-    {% include 'include/pagination.html' %}
-</div>
-{% endblock content %}
+{% endblock movie %}

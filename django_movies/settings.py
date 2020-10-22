@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'snowpenguin.django.recaptcha3',
+    'allauth',
+    'allauth.account'
 ]
 
 MIDDLEWARE = [
@@ -87,6 +89,12 @@ DATABASES = {
     }
 }
 
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
